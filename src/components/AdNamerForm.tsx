@@ -91,7 +91,7 @@ const PAGE_TYPES = [
   'Collection Page',
   'Homepage',
 ];
-const BRANDED_OPTIONS = ['Branded', 'Whitelisting'];
+const BRANDED_OPTIONS = ['Branded', 'Whitelisting', 'None'];
 const ASSET_TYPES = ['Video', 'Video GIF', 'Image'];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -155,7 +155,7 @@ function buildAdString(params: AdParams): string {
   return [
     params.product || null,
     params.conceptName || null,
-    params.branded || null,
+    (params.branded && params.branded !== 'None') ? params.branded : null,
     params.assetType || null,
     fmt('V', params.versions),
     params.designerEditor || null,
