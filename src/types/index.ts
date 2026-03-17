@@ -34,8 +34,8 @@ export interface AdParams {
 export const INITIAL_PARAMS: AdParams = {
   product: '',
   conceptName: '',
-  branded: 'Branded',
-  assetType: 'Video',
+  branded: 'None',
+  assetType: '',
   versions: [],
   designerEditor: '',
   headlines: [],

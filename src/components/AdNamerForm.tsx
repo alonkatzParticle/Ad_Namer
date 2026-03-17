@@ -378,7 +378,7 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
             <Label className="text-sm font-semibold">Asset Type</Label>
             <p className="text-xs text-muted-foreground">Video, GIF, or static image</p>
             <Select value={params.assetType} onValueChange={(v) => update('assetType', v)}>
-              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Select Asset Type…" /></SelectTrigger>
               <SelectContent>
                 {ASSET_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
               </SelectContent>
