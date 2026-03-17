@@ -18,11 +18,9 @@ export default defineConfig(({ mode }) => {
           target: 'https://api.monday.com',
           changeOrigin: true,
           rewrite: () => '/v2',
-          configure: (proxy) => {
-            proxy.on('proxyReq', (proxyReq) => {
-              proxyReq.setHeader('Authorization', env.MONDAY_API_KEY ?? '')
-              proxyReq.setHeader('API-Version', '2024-01')
-            })
+          headers: {
+            Authorization: env.MONDAY_API_KEY ?? '',
+            'API-Version': '2024-01',
           },
         },
       },
