@@ -302,13 +302,16 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="space-y-6">
-      {/* Selected-task pill */}
+    <div className="space-y-8">
+
+      {/* ── Selected-task pill ──────────────────────────────────────────────── */}
       {selectedTask && (
-        <div className="rounded-lg border bg-muted/50 p-3 space-y-1">
-          <div className="flex items-center justify-between gap-2">
+        <div className="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground mb-0.5">Selected Task</p>
+              <p className="text-[11px] font-semibold text-blue-500 uppercase tracking-wider mb-0.5">
+                Selected Task
+              </p>
               <p className="text-sm font-medium truncate">{selectedTask.name}</p>
             </div>
             <div className="flex items-center gap-2 shrink-0">
@@ -323,7 +326,7 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
               {onClearTask && (
                 <button
                   onClick={() => { handleReset(); onClearTask(); }}
-                  className="rounded-full p-1 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  className="rounded-full p-1 text-blue-400 hover:text-blue-700 hover:bg-blue-100 transition-colors"
                   title="Remove selected task"
                 >
                   <X className="h-4 w-4" />
@@ -334,124 +337,165 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
         </div>
       )}
 
-      {/* Main fields */}
-      <div className="grid grid-cols-2 gap-4">
-        {/* Product — auto-filled from task.product */}
-        <div className="space-y-1.5">
-          <Label>Product</Label>
-          <Select value={params.product} onValueChange={(v) => update('product', v)}>
-            <SelectTrigger><SelectValue placeholder="Select product…" /></SelectTrigger>
-            <SelectContent>
-              {PRODUCTS.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
-            </SelectContent>
-          </Select>
+      {/* ── Section: Content ────────────────────────────────────────────────── */}
+      <div className="rounded-lg border border-violet-200 bg-violet-50/40 p-5 space-y-4">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="h-2 w-2 rounded-full bg-violet-500 shrink-0" />
+          <p className="text-xs font-bold text-violet-600 uppercase tracking-widest">Content</p>
         </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Product</Label>
+            <p className="text-xs text-muted-foreground">Which product is being advertised?</p>
+            <Select value={params.product} onValueChange={(v) => update('product', v)}>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Select a product…" /></SelectTrigger>
+              <SelectContent>
+                {PRODUCTS.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Concept Name</Label>
+            <p className="text-xs text-muted-foreground">The creative angle or campaign theme</p>
+            <Input
+              className="mt-1"
+              value={params.conceptName}
+              onChange={(e) => update('conceptName', e.target.value)}
+              placeholder="e.g. Easter Sale 2026"
+            />
+          </div>
+        </div>
+      </div>
 
-        {/* Concept Name — auto-filled from task name (after last |) */}
-        <div className="space-y-1.5">
-          <Label>Concept Name</Label>
-          <Input
-            value={params.conceptName}
-            onChange={(e) => update('conceptName', e.target.value)}
-            placeholder="Auto-filled from task name…"
+      {/* ── Section: Format ─────────────────────────────────────────────────── */}
+      <div className="rounded-lg border border-orange-200 bg-orange-50/40 p-5 space-y-4">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="h-2 w-2 rounded-full bg-orange-500 shrink-0" />
+          <p className="text-xs font-bold text-orange-600 uppercase tracking-widest">Format</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Asset Type</Label>
+            <p className="text-xs text-muted-foreground">Video, GIF, or static image</p>
+            <Select value={params.assetType} onValueChange={(v) => update('assetType', v)}>
+              <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {ASSET_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Branded</Label>
+            <p className="text-xs text-muted-foreground">Is the brand visible in the ad?</p>
+            <Select value={params.branded} onValueChange={(v) => update('branded', v)}>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Select…" /></SelectTrigger>
+              <SelectContent>
+                {BRANDED_OPTIONS.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">
+              {params.assetType === 'Image' ? 'Designer' : 'Editor'}
+            </Label>
+            <p className="text-xs text-muted-foreground">
+              {params.assetType === 'Image' ? 'Who designed this asset?' : 'Who edited this video?'}
+            </p>
+            <Select value={params.designerEditor} onValueChange={(v) => update('designerEditor', v)}>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Select…" /></SelectTrigger>
+              <SelectContent>
+                {designerEditorOptions.map((e) => (
+                  <SelectItem key={e} value={e}>{e}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-muted-foreground mt-5">Which version number(s)?</p>
+            <MultiSelect
+              label="Version"
+              prefix="V"
+              max={5}
+              selected={params.versions}
+              onChange={(v) => update('versions', v)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Section: Placement ──────────────────────────────────────────────── */}
+      <div className="rounded-lg border border-teal-200 bg-teal-50/40 p-5 space-y-4">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="h-2 w-2 rounded-full bg-teal-500 shrink-0" />
+          <p className="text-xs font-bold text-teal-600 uppercase tracking-widest">Placement</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Page Type</Label>
+            <p className="text-xs text-muted-foreground">Where does clicking the ad lead?</p>
+            <Select value={params.pageType} onValueChange={(v) => update('pageType', v)}>
+              <SelectTrigger className="mt-1"><SelectValue placeholder="Select page type…" /></SelectTrigger>
+              <SelectContent>
+                {PAGE_TYPES.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-1">
+            <Label className="text-sm font-semibold">Profile Name</Label>
+            <p className="text-xs text-muted-foreground">The social account running this ad</p>
+            <Input
+              className="mt-1"
+              value={params.profileName}
+              onChange={(e) => update('profileName', e.target.value)}
+              placeholder="e.g. @particleformen"
+            />
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-muted-foreground mt-5">Which headline variation(s)?</p>
+            <MultiSelect
+              label="Headline"
+              prefix="H"
+              max={5}
+              selected={params.headlines}
+              onChange={(v) => update('headlines', v)}
+            />
+          </div>
+          <div className="space-y-1">
+            <p className="text-xs text-muted-foreground mt-5">Which body text variation(s)?</p>
+            <MultiSelect
+              label="Text"
+              prefix="T"
+              max={5}
+              selected={params.texts}
+              onChange={(v) => update('texts', v)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Section: Creator ────────────────────────────────────────────────── */}
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50/40 p-5 space-y-3">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="h-2 w-2 rounded-full bg-emerald-500 shrink-0" />
+          <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Creator</p>
+        </div>
+        <div className="space-y-1">
+          <Label className="text-sm font-semibold">Creator Name</Label>
+          <p className="text-xs text-muted-foreground">The UGC creator featured — auto-detected from task name or updates</p>
+          <CreatorSearch
+            value={params.creator}
+            onChange={(v) => update('creator', v)}
           />
         </div>
-
-        <div className="space-y-1.5">
-          <Label>Branded</Label>
-          <Select value={params.branded} onValueChange={(v) => update('branded', v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {BRANDED_OPTIONS.map((b) => <SelectItem key={b} value={b}>{b}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Asset Type — auto-detected from board + Type column */}
-        <div className="space-y-1.5">
-          <Label>Asset Type</Label>
-          <Select value={params.assetType} onValueChange={(v) => update('assetType', v)}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {ASSET_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Designer/Editor — conditional list based on asset type */}
-        <div className="space-y-1.5">
-          <Label>{params.assetType === 'Image' ? 'Designer' : 'Editor'}</Label>
-          <Select
-            value={params.designerEditor}
-            onValueChange={(v) => update('designerEditor', v)}
-          >
-            <SelectTrigger><SelectValue placeholder="Select…" /></SelectTrigger>
-            <SelectContent>
-              {designerEditorOptions.map((e) => (
-                <SelectItem key={e} value={e}>{e}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-1.5">
-          <Label>Page Type</Label>
-          <Select value={params.pageType} onValueChange={(v) => update('pageType', v)}>
-            <SelectTrigger><SelectValue placeholder="Select page type…" /></SelectTrigger>
-            <SelectContent>
-              {PAGE_TYPES.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-1.5 col-span-2">
-          <Label>Profile Name</Label>
-          <Input
-            value={params.profileName}
-            onChange={(e) => update('profileName', e.target.value)}
-            placeholder="e.g. @particleformen"
-          />
-        </div>
       </div>
 
-      {/* Multi-select row */}
-      <div className="grid grid-cols-3 gap-4 rounded-lg border p-4 bg-muted/30">
-        <MultiSelect
-          label="Version"
-          prefix="V"
-          max={5}
-          selected={params.versions}
-          onChange={(v) => update('versions', v)}
-        />
-        <MultiSelect
-          label="Headline"
-          prefix="H"
-          max={5}
-          selected={params.headlines}
-          onChange={(v) => update('headlines', v)}
-        />
-        <MultiSelect
-          label="Text"
-          prefix="T"
-          max={5}
-          selected={params.texts}
-          onChange={(v) => update('texts', v)}
-        />
-      </div>
-
-      {/* Creator */}
-      <div className="space-y-1.5">
-        <Label>Creator</Label>
-        <CreatorSearch
-          value={params.creator}
-          onChange={(v) => update('creator', v)}
-        />
-      </div>
-
-      {/* Generated string */}
-      <div className="space-y-2">
+      {/* ── Output ──────────────────────────────────────────────────────────── */}
+      <div className="rounded-lg border-2 border-slate-200 bg-slate-50 p-5 space-y-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
-          <Label className="text-base font-semibold">Generated Ad Name</Label>
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-slate-500 shrink-0" />
+            <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">Generated Ad Name</p>
+          </div>
           <div className="flex gap-2 flex-wrap">
             <Button variant="outline" size="sm" onClick={handleReset}>
               <RefreshCw className="h-4 w-4 mr-1" /> Reset
@@ -470,13 +514,13 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
         <Textarea
           value={editedString}
           onChange={(e) => setEditedString(e.target.value)}
-          className="font-mono text-sm"
+          className="font-mono text-sm bg-white border-slate-200"
           rows={3}
         />
 
         <div className="flex items-center justify-between gap-2">
           <p className="text-xs text-muted-foreground">
-            Manually edit the string above before copying or saving.
+            Edit the string above before copying or saving.
           </p>
           {saveStatus === 'error' && (
             <p className="text-xs text-destructive shrink-0">{saveMessage}</p>
@@ -488,6 +532,7 @@ export function AdNamerForm({ selectedTask, onClearTask }: AdNamerFormProps) {
           )}
         </div>
       </div>
+
     </div>
   );
 }

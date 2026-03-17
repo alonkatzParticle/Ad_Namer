@@ -7,13 +7,12 @@ import { AdNamerForm } from '@/components/AdNamerForm';
 import { QuickImport } from '@/components/QuickImport';
 import { useMondayData } from '@/hooks/useMondayData';
 import { MondayTask } from '@/types';
-import { isLive, isReadMode, hasApiKey, hasBoardIds } from '@/lib/env';
+import { isLive, isReadMode, hasBoardIds } from '@/lib/env';
 import {
   Layers,
   LayoutGrid,
   Wand2,
   Lock,
-  WifiOff,
   AlertTriangle,
   RefreshCw,
   Loader2,
@@ -87,21 +86,9 @@ export default function App() {
           </Alert>
         )}
 
-        {/* Missing API key */}
-        {!hasApiKey && (
-          <Alert variant="info">
-            <WifiOff className="h-4 w-4" />
-            <AlertTitle>Not connected to monday.com</AlertTitle>
-            <AlertDescription>
-              Add <code className="font-mono text-xs">VITE_MONDAY_API_KEY</code> to your{' '}
-              <code className="font-mono text-xs">.env</code> file to load live board data.
-              The app is running with mock data for now.
-            </AlertDescription>
-          </Alert>
-        )}
 
         {/* API key present but board IDs missing */}
-        {hasApiKey && !hasBoardIds && (
+        {!hasBoardIds && (
           <Alert variant="warning">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Board IDs not configured</AlertTitle>

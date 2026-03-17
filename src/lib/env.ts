@@ -7,9 +7,6 @@
  * for the "Video Projects" and "Design Projects - 2.0" boards.
  */
 export const ENV = {
-  /** Monday.com personal API token. Empty string means "not configured". */
-  MONDAY_API_KEY: import.meta.env.VITE_MONDAY_API_KEY ?? '',
-
   /**
    * When true the app is in read-only mode:
    *  - All monday.com mutations are blocked.
@@ -41,8 +38,8 @@ export const ENV = {
   PRODUCT_COLUMN_ID: import.meta.env.VITE_PRODUCT_COLUMN_ID || 'label9',
 } as const;
 
-/** True when a Monday.com API key has been configured. */
-export const hasApiKey = ENV.MONDAY_API_KEY.trim().length > 0;
+/** API key lives server-side — always assume the proxy is available. */
+export const hasApiKey = true;
 
 /** True when both board IDs have been configured. */
 export const hasBoardIds =

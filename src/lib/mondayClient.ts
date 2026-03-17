@@ -8,8 +8,7 @@
 import { MondayTask } from '@/types';
 import { ENV } from './env';
 
-const API_URL = 'https://api.monday.com/v2';
-const API_VERSION = '2024-01';
+const API_URL = '/api/monday';
 
 // ─── Low-level fetch ─────────────────────────────────────────────────────────
 
@@ -24,11 +23,7 @@ async function gql<T>(
 ): Promise<T> {
   const res = await fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: ENV.MONDAY_API_KEY,
-      'API-Version': API_VERSION,
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables }),
   });
 

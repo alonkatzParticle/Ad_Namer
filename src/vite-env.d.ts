@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_MONDAY_API_KEY: string;
   readonly VITE_READ_MODE: string;
   readonly VITE_VIDEO_BOARD_ID: string;
   readonly VITE_DESIGN_BOARD_ID: string;
